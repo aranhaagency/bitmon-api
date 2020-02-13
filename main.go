@@ -42,11 +42,12 @@ func ApplyRoutes(r *gin.Engine) {
 		// General Information
 		api.GET("/mon/general/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetGeneralMon) }))
 		api.GET("/mon/particular/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetParticularMon) }))
-		api.GET("/element/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetElem) }))
 
 		// User Information
-		api.GET("/user/mons/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetGeneralMon) }))
-		api.GET("/user/elem/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetGeneralMon) }))
+		api.GET("/user/mons/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) }))
+
+		// Update routes
+		api.POST("/user/mons/particular", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) }))
 	}
 	r.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "Not Found")

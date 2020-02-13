@@ -30,19 +30,7 @@ func (ctrl *BitmonController) GetParticularMon(id string) (interface{}, error) {
 	return data, nil
 }
 
-func (ctrl *BitmonController) GetElem(id string) (interface{}, error) {
-	data, err := ctrl.dbModel.GetElem(id)
-	if err != nil {
-		return nil, errors.New("element information not found")
-	}
-	return data, nil
-}
-
 func (ctrl *BitmonController) GetUserMons(id string) (interface{}, error) {
-	return nil, nil
-}
-
-func (ctrl *BitmonController) GeUserElements(id string) (interface{}, error) {
 	return nil, nil
 }
 

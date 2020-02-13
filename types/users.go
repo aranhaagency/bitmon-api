@@ -10,8 +10,3 @@ type MonsData struct {
 	Particular ParticularMon `json:"particular"`
 	OnChain    OnChainData   `json:"on_chain"`
 }
-
-type UserElements struct {
-	Acc  string    `json:"acc"`
-	Elem []Element `json:"mons"`
-}
