@@ -1,2 +1,3 @@
-# bitmon-api
-Bitmon contracts interaction API and main data
+# Bitmon GraphQL API
+
+Bitmon API is the main source of information from non-fungible elements on the Ethereum network for the Bitmon World.
