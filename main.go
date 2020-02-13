@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/bitmon-world/bitmon-api/controllers"
+	"github.com/bitmon-world/bitmon-api/types"
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-contrib/cors"
@@ -47,16 +48,25 @@ func ApplyRoutes(r *gin.Engine) {
 		api.GET("/user/mons/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) }))
 
 		// Update routes
-		api.POST("/user/mons/particular", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) }))
+		api.POST("/user/mons/particular", func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) })
+
+		// Adventure algorithm
+		api.POST("/adventure", func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) })
 	}
 	r.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "Not Found")
 	})
 }
 
-func callWrapper(c *gin.Context, method func(id string) (interface{}, error)) {
+func callWrapper(c *gin.Context, method func(params types.ReqParams) (interface{}, error)) {
 	id := c.Param("id")
-	res, err := method(id)
+	params := types.ReqParams{
+		ID:            id,
+		AdventureType: "",
+		TicketID:      "",
+		TicketProof:   "",
+	}
+	res, err := method(params)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

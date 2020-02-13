@@ -3,6 +3,7 @@ package controllers
 import (
 	"errors"
 	"github.com/bitmon-world/bitmon-api/models"
+	"github.com/bitmon-world/bitmon-api/types"
 )
 
 type TestRes struct {
@@ -14,23 +15,27 @@ type BitmonController struct {
 	dbModel *models.BitmonDBModel
 }
 
-func (ctrl *BitmonController) GetGeneralMon(id string) (interface{}, error) {
-	data, err := ctrl.dbModel.GetGenMon(id)
+func (ctrl *BitmonController) GetGeneralMon(params types.ReqParams) (interface{}, error) {
+	data, err := ctrl.dbModel.GetGenMon(params.ID)
 	if err != nil {
 		return nil, errors.New("general monster information not found")
 	}
 	return data, nil
 }
 
-func (ctrl *BitmonController) GetParticularMon(id string) (interface{}, error) {
-	data, err := ctrl.dbModel.GetPartMon(id)
+func (ctrl *BitmonController) GetParticularMon(params types.ReqParams) (interface{}, error) {
+	data, err := ctrl.dbModel.GetPartMon(params.ID)
 	if err != nil {
 		return nil, errors.New("particular monster information not found")
 	}
 	return data, nil
 }
 
-func (ctrl *BitmonController) GetUserMons(id string) (interface{}, error) {
+func (ctrl *BitmonController) GetUserMons(params types.ReqParams) (interface{}, error) {
+	return nil, nil
+}
+
+func (ctrl *BitmonController) CalcAdventureProb(params types.ReqParams) (interface{}, error) {
 	return nil, nil
 }
 

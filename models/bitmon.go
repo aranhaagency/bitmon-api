@@ -20,7 +20,8 @@ import (
 	elements/ <- Elements information
 		ID/
            Element
-
+	modifiers/
+		adv/ <- adventure algorithm modifiers
 
 */
 
@@ -42,6 +43,15 @@ func (model *BitmonDBModel) GetPartMon(id string) (data types.ParticularMon, err
 	defer cancel()
 	col := model.db.Collection("user_mons")
 	filter := bson.D{{Key: "id", Value: id}}
+	err = col.FindOne(ctx, filter).Decode(&data)
+	return
+}
+
+func (model *BitmonDBModel) GetAdventureModifiers() (data types.AdventureModifiers, err error) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	col := model.db.Collection("modifiers")
+	filter := bson.D{{Key: "id", Value: "adv"}}
 	err = col.FindOne(ctx, filter).Decode(&data)
 	return
 }
