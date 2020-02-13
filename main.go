@@ -38,7 +38,7 @@ func ApplyRoutes(r *gin.Engine) {
 	}))
 	{
 		store := persistence.NewInMemoryStore(time.Hour)
-		ctrl := controllers.NewBitmonController(os.Getenv("MONGDB_URI"), os.Getenv("MONGODB_NAME"))
+		ctrl := controllers.NewBitmonController(os.Getenv("MONGODB_URI"), os.Getenv("MONGODB_NAME"))
 		// General Information
 		api.GET("/mon/general/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetGeneralMon) }))
 		api.GET("/mon/particular/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetParticularMon) }))
