@@ -40,18 +40,14 @@ func ApplyRoutes(r *gin.Engine) {
 	{
 		store := persistence.NewInMemoryStore(time.Hour)
 		ctrl := controllers.NewBitmonController(os.Getenv("MONGODB_URI"), os.Getenv("MONGODB_NAME"))
+
 		// General Information
-		api.GET("/mon/general/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetGeneralMon) }))
-		api.GET("/mon/particular/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetParticularMon) }))
-
-		// User Information
-		api.GET("/user/mons/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) }))
-
-		// Update routes
-		api.POST("/user/mons/particular", func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) })
+		api.GET("/mon/single/:id", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetMonInfo) }))
+		api.GET("/mon/list", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetMonList) }))
+		api.POST("/mon/add", cache.CachePage(store, time.Minute*10, func(c *gin.Context) { callWrapper(c, ctrl.GetMonList) }))
 
 		// Adventure algorithm
-		api.POST("/adventure", func(c *gin.Context) { callWrapper(c, ctrl.GetUserMons) })
+		api.POST("/adventure", func(c *gin.Context) { callWrapper(c, ctrl.CalcAdventure) })
 	}
 	r.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "Not Found")

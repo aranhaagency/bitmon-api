@@ -15,7 +15,7 @@ type BitmonController struct {
 	dbModel *models.BitmonDBModel
 }
 
-func (ctrl *BitmonController) GetGeneralMon(params types.ReqParams) (interface{}, error) {
+func (ctrl *BitmonController) GetMonList(params types.ReqParams) (interface{}, error) {
 	data, err := ctrl.dbModel.GetGenMon(params.ID)
 	if err != nil {
 		return nil, errors.New("general monster information not found")
@@ -23,19 +23,23 @@ func (ctrl *BitmonController) GetGeneralMon(params types.ReqParams) (interface{}
 	return data, nil
 }
 
-func (ctrl *BitmonController) GetParticularMon(params types.ReqParams) (interface{}, error) {
-	data, err := ctrl.dbModel.GetPartMon(params.ID)
+func (ctrl *BitmonController) GetMonInfo(params types.ReqParams) (interface{}, error) {
+	data, err := ctrl.dbModel.GetGenMon(params.ID)
 	if err != nil {
-		return nil, errors.New("particular monster information not found")
+		return nil, errors.New("general monster information not found")
 	}
 	return data, nil
 }
 
-func (ctrl *BitmonController) GetUserMons(params types.ReqParams) (interface{}, error) {
-	return nil, nil
+func (ctrl *BitmonController) AddMon(params types.ReqParams) (interface{}, error) {
+	data, err := ctrl.dbModel.GetGenMon(params.ID)
+	if err != nil {
+		return nil, errors.New("general monster information not found")
+	}
+	return data, nil
 }
 
-func (ctrl *BitmonController) CalcAdventureProb(params types.ReqParams) (interface{}, error) {
+func (ctrl *BitmonController) CalcAdventure(params types.ReqParams) (interface{}, error) {
 	return nil, nil
 }
 

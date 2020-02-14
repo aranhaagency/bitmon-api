@@ -14,12 +14,6 @@ import (
 	mons/ <- General monsters information
 		ID/
  		   GeneralMon
-	user_mons/ <- Particular monsters information
-		ID/ (First 8 bytes of the SHA256(Serialized ADN data)
-           ParticularMon
-	elements/ <- Elements information
-		ID/
-           Element
 	modifiers/
 		adv/ <- adventure algorithm modifiers
 
@@ -27,6 +21,28 @@ import (
 
 type BitmonDBModel struct {
 	db *mongo.Database
+}
+
+func (model *BitmonDBModel) GetMonsList() (data []types.GeneralMon, err error) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	col := model.db.Collection("mons")
+	cur, err := col.Find(ctx, bson.D{})
+	if err != nil {
+		return
+	}
+	defer func() {
+		_ = cur.Close(ctx)
+	}()
+	for cur.Next(ctx) {
+		var mon types.GeneralMon
+		err = cur.Decode(&data)
+		if err != nil {
+			return
+		}
+		data = append(data, mon)
+	}
+	return
 }
 
 func (model *BitmonDBModel) GetGenMon(id string) (data types.GeneralMon, err error) {
@@ -38,12 +54,7 @@ func (model *BitmonDBModel) GetGenMon(id string) (data types.GeneralMon, err err
 	return
 }
 
-func (model *BitmonDBModel) GetPartMon(id string) (data types.ParticularMon, err error) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	col := model.db.Collection("user_mons")
-	filter := bson.D{{Key: "id", Value: id}}
-	err = col.FindOne(ctx, filter).Decode(&data)
+func (model *BitmonDBModel) AddMon(mon types.GeneralMon) (data types.GeneralMon, err error) {
 	return
 }
 
