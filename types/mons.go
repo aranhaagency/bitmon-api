@@ -1,16 +1,12 @@
 package types
 
-type Gender uint32
-type Nature uint32
-type Variant uint32
-type Generation uint32
-type Specimen uint32
-
 type GeneralMon struct {
 	Name             string     `bson:"name" json:"name"`
 	SpritesUrl       string     `bson:"sprites" json:"sprites"`
 	StatsBaseTable   StatsMap   `bson:"stats_base_table" json:"stats_base_table"`
 	AttacksBaseTable AttacksMap `bson:"attacks_base_table" json:"attacks_base_table"`
+	Nature           Nature     `bson:"nature" json:"nature"`
+	Specie           Specie     `bson:"specie" json:"specie"`
 	Type             int        `bson:"type" json:"type"`
 }
 
@@ -32,15 +28,15 @@ type Attack struct {
 	Force int    `bson:"force" json:"force"`
 }
 
-type NaturesMan map[int]NatureSpecifics
+type NaturesMan map[int]Nature
 
-type NatureSpecifics struct {
+type Nature struct {
 	Name               string `bson:"name" json:"name"`
 	StatsModifications Stats  `bson:"stats_modifications" json:"stats_modifications"`
 }
 
-type SpeciesMap map[int]SpeciesInfo
+type SpeciesMap map[int]Specie
 
-type SpeciesInfo struct {
+type Specie struct {
 	Name string `bson:"name" json:"name"`
 }
